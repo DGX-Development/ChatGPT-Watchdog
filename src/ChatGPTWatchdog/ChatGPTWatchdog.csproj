@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>ChatGPT-Watchdog</AssemblyName>
+    <RootNamespace>ChatGPTWatchdog</RootNamespace>
+    <Version>0.5.4</Version>
+    <Company>DGX Development</Company>
+    <ApplicationIcon>../../assets/watchdog.ico</ApplicationIcon>
+    <PublishTrimmed>false</PublishTrimmed>
+    <DefaultItemExcludes>$(DefaultItemExcludes);**/.dev/**;**/.local/**</DefaultItemExcludes>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="../../LICENSE" Link="LICENSE.txt" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+    <EmbeddedResource Include="../../assets/watchdog.ico" LogicalName="watchdog.ico" />
+    <EmbeddedResource Include="../../assets/watchdog.png" LogicalName="watchdog.png" />
+  </ItemGroup>
+</Project>
+

@@ -1,0 +1,12 @@
+* text=auto
+*.cs text eol=lf
+*.csproj text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.ps1 text eol=crlf
+*.png binary
+*.webp binary
+*.ico binary
+# Preserve approved vector artwork and the official license exactly.
+*.svg -text
+LICENSE -text
