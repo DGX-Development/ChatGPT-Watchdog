@@ -30,11 +30,11 @@ Monitoring can continue while Windows is locked, when its warning is not visible
 
 ## Getting started
 
-This is a source build; a packaged download has not been published. It requires **Windows 11 x64**, the **.NET 10 Desktop Runtime**, and a **.NET 10 SDK** to build from source.
+Download [ChatGPT-Watchdog-0.5.5-win-x64.zip](https://github.com/DGX-Development/ChatGPT-Watchdog/releases/download/v0.5.5/ChatGPT-Watchdog-0.5.5-win-x64.zip) from the [release page](https://github.com/DGX-Development/ChatGPT-Watchdog/releases/tag/v0.5.5). Extract all files to a permanent folder, then run **ChatGPT-Watchdog.exe**. The Windows x64 download includes its .NET runtime; no installer or separately installed runtime is required.
 
-Follow the [build instructions](docs/development.md#build). Keep the five output files together in a permanent folder, then run **ChatGPT-Watchdog.exe**. Review the timings and startup preference before choosing **Save settings**. Startup registration occurs when settings are saved, including the startup switch's immediate save.
+Review the timings and startup preference before choosing **Save settings**. Startup registration occurs when settings are saved, including the startup switch's immediate save. Keep the included app license and Microsoft runtime notices with the executable. There is no automatic updater. For source builds, see the [build instructions](docs/development.md#build).
 
-The application is unsigned. Windows may request a security check. A specific malware detection should be investigated separately; do not bypass it as an ordinary unfamiliar-app notice.
+The application is unsigned. Windows may request a security check. A SHA256 checksum accompanies the download. A specific malware detection should be investigated separately; do not bypass it as an ordinary unfamiliar-app notice.
 
 ## Basic use
 
@@ -48,6 +48,7 @@ Closing settings leaves monitoring running. Use **Settings > Open data folder** 
 ## Documentation
 
 - [User guide](docs/user-guide.md) - settings, warnings, startup, updates and screenshots.
+- [Portable instructions](docs/Portable-Readme.txt) - offline instructions included in the download.
 - [Development and verification](docs/development.md) - build requirements and safe test modes.
 - [Changelog](CHANGELOG.md) - completed changes.
 
@@ -61,6 +62,6 @@ About links to the developer website, [DGX.digitalguy.me](https://dgx.digitalguy
 
 ## License and attribution
 
-The software is source available under the [PolyForm Noncommercial License 1.0.0](LICENSE), included unchanged. The same text is supplied as **LICENSE.txt** beside the executable. Permitted use, modification and distribution are governed by that license.
+The software is source available under the [PolyForm Noncommercial License 1.0.0](LICENSE), included unchanged. The same text is supplied as **LICENSE.txt** beside the executable. Permitted use, modification and distribution are governed by that license. Microsoft runtime components retain their own licenses and notices, included with self-contained builds.
 
-The dog artwork is supplied for this project. Typography and layout conventions, shared menu glyphs and small sound/notification helpers follow Backup Reminder. Third-party product names and trademarks retain their applicable rights. This project is independent of OpenAI and does not include the ChatGPT application.
+Typography and layout conventions, shared menu glyphs and small sound/notification helpers follow Backup Reminder. Third-party product names and trademarks retain their applicable rights. This project is independent of OpenAI and does not include the ChatGPT application.

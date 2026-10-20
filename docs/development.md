@@ -58,4 +58,12 @@ Do not use important active ChatGPT work for a live force-close test. Active-tas
 
 Production icon resources are assets/watchdog.ico and assets/watchdog.png. The approved vector source is assets/concepts/watchdog-refined-v2.svg. Repository banners, social artwork and screenshots are not part of the runtime output.
 
-Preserve the official LICENSE text exactly. A future self-contained package must include the licenses/notices for the actual bundled runtime. Selecting and publishing that package is separate from building the present five-file output.
+Preserve the official LICENSE text exactly. To prepare a self-contained portable Windows x64 package:
+
+```powershell
+.\scripts\Publish-Windows.ps1
+```
+
+Pass `-Dotnet` if the SDK is not on PATH, and optionally `-OutputDirectory` for a fresh destination. Runtime packs must already be cached; NuGet.Config does not enable network feeds. If needed, restore the project with `-r win-x64 -p:SelfContained=true -p:PublishSingleFile=true --source https://api.nuget.org/v3/index.json` using the same SDK and package-cache environment before publishing.
+
+The script refuses to overwrite an existing package. It publishes without debug symbols, includes notices from the exact resolved Microsoft runtime packs, and packages only the executable, offline README, app license and three runtime notice files. It writes a ZIP and SHA256 checksum under artifacts/releases. It does not replace the installed local build, launch monitoring, register startup, tag, commit or publish to GitHub.

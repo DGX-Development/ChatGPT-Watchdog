@@ -61,3 +61,5 @@
 !/src/ChatGPTWatchdog/WindowsWarningAttention.cs
 !/tests/ChatGPTWatchdog.Tests/ChatGPTWatchdog.Tests.csproj
 !/tests/ChatGPTWatchdog.Tests/Program.cs
+!/scripts/Publish-Windows.ps1
+!/docs/Portable-Readme.txt

@@ -51,7 +51,7 @@ Choose **System**, **Light** or **Dark** under Appearance. Alt+F, Alt+S and Alt+
 
 Exit Watchdog before manually copying or changing its data. Configuration backup and restore commands are not included.
 
-To update, exit Watchdog and replace all supplied application files in the same folder. Keep your separate data folder. Keep **LICENSE.txt** with the executable. This build requires the .NET 10 Desktop Runtime.
+To update, exit Watchdog and replace all supplied application files in the same folder. Keep your separate data folder. Keep all supplied license and runtime notice files. The portable release includes its .NET runtime; framework-dependent source builds require the .NET 10 Desktop Runtime.
 
 Before moving the app, turn off startup, exit and move the application files, then enable startup from the new location. To remove it, turn off startup, exit and remove the application folder. Retain or delete the separate data folder as needed.
 
