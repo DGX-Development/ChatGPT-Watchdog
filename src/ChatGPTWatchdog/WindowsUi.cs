@@ -91,6 +91,8 @@ internal abstract class CompactForm : Form
 
 internal sealed class SettingsForm : CompactForm
 {
+    internal const string IssuesWebsite = "https://github.com/DGX-Development/ChatGPT-Watchdog/issues/new";
+    internal Action<string> OpenExternalLink = url => System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo(url) { UseShellExecute = true });
     internal readonly NumberField Idle = new(1, 1440, 45);
     internal readonly NumberField Warning = new(10, 600, 120);
     internal readonly NumberField Postpone = new(1, 1440, 60);
@@ -214,7 +216,13 @@ internal sealed class SettingsForm : CompactForm
         docs.Click += (_, _) => ShowDocumentation(false);
         help.DropDownItems.Add(docs);
         var report = new ToolStripMenuItem("Report an &issue")
-        { Enabled = false, ToolTipText = "Issue reporting will be available when the public repository is ready." };
+        { ToolTipText = "Open a new GitHub issue. Review and submit the report yourself." };
+        report.Click += (_, _) =>
+        {
+            try { OpenExternalLink(IssuesWebsite); }
+            catch (Exception error) when (error is System.ComponentModel.Win32Exception or InvalidOperationException)
+            { using var dialog = new MessageForm("Issue page could not be opened", error.Message, Theme); dialog.ShowDialog(this); }
+        };
         help.DropDownItems.Add(report); help.DropDownItems.Add(new ToolStripSeparator());
         help.DropDownItems.Add("&About ChatGPT Watchdog…", null, (_, _) => ShowDocumentation(true));
         settings.DropDownItems.Add(new ToolStripSeparator());

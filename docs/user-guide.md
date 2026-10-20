@@ -61,7 +61,7 @@ Hover over the dog or open its menu to check status. **Monitoring unavailable** 
 
 Target recognition is restricted to the identified official packaged desktop app in the current Windows session. Changes to that app's packaging may require a Watchdog update. Running a browser session or a different application is not supported.
 
-Watchdog runs locally without telemetry or remote control. Website links open only when selected. **Report an issue** is unavailable until the public issue destination is configured. Reports and shared logs should omit personal paths and private information.
+Watchdog runs locally without telemetry or remote control. Website links open only when selected. **Help > Report an issue** opens [the GitHub issue form](https://github.com/DGX-Development/ChatGPT-Watchdog/issues/new); review and submit it yourself. Reports and shared logs should omit personal paths and private information.
 
 ## Screenshots
 

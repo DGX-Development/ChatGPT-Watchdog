@@ -285,6 +285,11 @@ internal static class Preview
         menuSave.Show(); Application.DoEvents(); menuSave.Idle.Value = 47;
         ((ToolStripMenuItem)menuSave.NavigationMenu.Items[0]).DropDownItems[0].PerformClick();
         if (saved?.IdleMinutes != 47 || menuSave.Dirty) throw new InvalidDataException("File > Save settings failed.");
+        string? reportUrl = null; menuSave.OpenExternalLink = url => reportUrl = url;
+        var reportCommand = ((ToolStripMenuItem)menuSave.NavigationMenu.Items[2]).DropDownItems.OfType<ToolStripMenuItem>().Single(item => item.Text == "Report an &issue");
+        if (!reportCommand.Enabled) throw new InvalidDataException("Report an issue must be enabled.");
+        reportCommand.PerformClick();
+        if (reportUrl != "https://github.com/DGX-Development/ChatGPT-Watchdog/issues/new") throw new InvalidDataException("Report an issue must open this project's issue form.");
         bool pause = false;
         menuSave.PauseRequested += value => pause = value;
         var settingsMenu = (ToolStripMenuItem)menuSave.NavigationMenu.Items[1];

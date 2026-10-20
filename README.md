@@ -4,7 +4,7 @@
 
 A Windows utility that force-closes the **ChatGPT Windows desktop app** after computer inactivity. It helps prevent the app being left running after you walk away. **It does not close ChatGPT in a web browser.**
 
-**Version: 0.5.4.** Windows 11 x64. See the [changelog](CHANGELOG.md).
+**Version: 0.5.5.** Windows 11 x64. See the [changelog](CHANGELOG.md).
 
 > [!WARNING]
 > **ChatGPT is force-closed when the warning countdown expires, even during active work. Unsaved work may be lost.** Watchdog measures computer keyboard/mouse inactivity and does not detect active chats or tasks. Pause monitoring before leaving important work unattended.
@@ -15,7 +15,7 @@ A Windows utility that force-closes the **ChatGPT Windows desktop app** after co
 | --- | --- |
 | ![Watchdog settings in light appearance](assets/screenshots/settings-light.png) | ![Watchdog settings in dark appearance](assets/screenshots/settings-dark.png) |
 
-[Countdown, notification options, Help and tray screenshots](docs/user-guide.md#screenshots) show the same version with generic settings. These are native preview captures; Windows title-bar styling can differ on your desktop.
+[Countdown, notification options, Help and tray screenshots](docs/user-guide.md#screenshots) show version 0.5.4 with generic settings. Version 0.5.5 enables Report an issue. These are native preview captures; Windows title-bar styling can differ on your desktop.
 
 ## Features
 
@@ -53,7 +53,9 @@ Closing settings leaves monitoring running. Use **Settings > Open data folder** 
 
 ## Help and feedback
 
-Press **F1** for built-in Help. **Help > Report an issue** is currently unavailable until a public issue destination is configured. The application does not submit reports automatically. When reporting a problem, include the version and reproduction steps; omit personal paths and private data.
+Press **F1** for built-in Help. **Help > Report an issue** opens [this project's GitHub issue form](https://github.com/DGX-Development/ChatGPT-Watchdog/issues/new). Review and submit the report yourself; the application does not submit it automatically. When reporting a problem, include the version and reproduction steps; omit personal paths and private data.
+
+[Project page](https://dgx.digitalguy.me/projects/chatgpt-watchdog.html).
 
 About links to the developer website, [DGX.digitalguy.me](https://dgx.digitalguy.me).
 
