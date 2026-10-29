@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
     <AssemblyName>ChatGPT-Watchdog</AssemblyName>
     <RootNamespace>ChatGPTWatchdog</RootNamespace>
-    <Version>0.5.5</Version>
+    <Version>0.6.0</Version>
     <Company>DGX Development</Company>
     <ApplicationIcon>../../assets/watchdog.ico</ApplicationIcon>
     <PublishTrimmed>false</PublishTrimmed>

@@ -134,61 +134,138 @@ internal sealed class NumberField : Panel
 }
 
 // Use the same flat menu treatment for the tray, menu bar, and field picker.
-internal sealed class FlatMenuRenderer(UiColors colors) : ToolStripProfessionalRenderer(new MenuPalette(colors))
+internal sealed class FlatMenuRenderer(UiColors colors):ToolStripProfessionalRenderer(new MenuPalette(colors))
 {
+    static bool IsStatus(ToolStripItem item)=>item.Tag is string tag&&tag.StartsWith("status-",StringComparison.Ordinal);
+    static Color SelectionColor(UiColors value)=>SystemInformation.HighContrast?SystemColors.Highlight:ColorTranslator.FromHtml(value.Dark?"#414141":"#EEEEEE");
+    internal static void ApplySpacing(ToolStrip strip)
+    {
+        int Scale(int value)=>(int)Math.Round(value*strip.DeviceDpi/96f);
+        strip.Padding=strip is ToolStripDropDown?new Padding(Scale(6)):new Padding(Scale(10),Scale(4),0,Scale(4));
+        strip.ImageScalingSize=new Size(Scale(24),Scale(18));
+        foreach(ToolStripItem item in strip.Items)
+        {
+            if(item is ToolStripSeparator)continue;
+            item.Padding=strip is ToolStripDropDown?new Padding(Scale(12),Scale(9),Scale(20),Scale(9)):new Padding(Scale(7),Scale(3),Scale(7),Scale(3));
+            if(item is ToolStripMenuItem entry&&entry.HasDropDownItems)ApplySpacing(entry.DropDown);
+        }
+    }
+    protected override void OnRenderToolStripBackground(ToolStripRenderEventArgs e)
+    {
+        e.Graphics.Clear(SystemInformation.HighContrast?SystemColors.Menu:e.ToolStrip.BackColor);
+    }
+    protected override void OnRenderImageMargin(ToolStripRenderEventArgs e) { }
+    protected override void OnRenderToolStripBorder(ToolStripRenderEventArgs e)
+    {
+        if(e.ToolStrip is not ToolStripDropDown dropdown)return;
+        Color border=SystemInformation.HighContrast?SystemColors.WindowText:ControlPaint.Light(e.ToolStrip?.BackColor??ColorTable.ToolStripDropDownBackground,.18f);
+        using var pen=new Pen(border);
+        e.Graphics.DrawRectangle(pen,0,0,dropdown.Width-1,dropdown.Height-1);
+    }
     protected override void OnRenderMenuItemBackground(ToolStripItemRenderEventArgs e)
     {
-        bool status = e.Item.Tag is string tag && tag.StartsWith("status-", StringComparison.Ordinal);
-        using var fill = new SolidBrush(!status && (e.Item.Selected || e.Item.Pressed) ? colors.Hover : e.ToolStrip?.BackColor ?? colors.Surface);
-        e.Graphics.FillRectangle(fill, new Rectangle(Point.Empty, e.Item.Size));
+        if(IsStatus(e.Item)||!e.Item.Enabled||!(e.Item.Selected||e.Item.Pressed))return;
+        bool highContrast=SystemInformation.HighContrast;
+        using var fill=new SolidBrush(highContrast?SystemColors.Highlight:ColorTable.MenuItemSelected);
+        float scale=(e.ToolStrip?.DeviceDpi??96)/96f;
+        var bounds=new RectangleF(2*scale,scale,VisibleItemWidth(e.Item)-4*scale,e.Item.Height-2*scale);
+        if(bounds.Width<=0||bounds.Height<=0)return;
+        var state=e.Graphics.Save();
+        e.Graphics.SmoothingMode=SmoothingMode.AntiAlias;
+        using var shape=Drawing.Rounded(bounds,4*scale);
+        e.Graphics.FillPath(fill,shape);
+        e.Graphics.Restore(state);
     }
-    protected override void OnRenderItemImage(ToolStripItemImageRenderEventArgs e)
+    protected override void OnRenderSeparator(ToolStripSeparatorRenderEventArgs e)
     {
-        if (e.Item.Tag is string tag && tag.StartsWith("status-", StringComparison.Ordinal) && e.Image is not null)
-            e.Graphics.DrawImage(e.Image, e.ImageRectangle);
-        else base.OnRenderItemImage(e);
+        float scale=(e.ToolStrip?.DeviceDpi??96)/96f;
+        Color color=SystemInformation.HighContrast?SystemColors.WindowText:ControlPaint.Light(e.ToolStrip?.BackColor??ColorTable.ToolStripDropDownBackground,.18f);
+        using var pen=new Pen(color);
+        float y=e.Item.Height/2f;
+        e.Graphics.DrawLine(pen,9*scale,y,VisibleItemWidth(e.Item)-9*scale,y);
     }
     protected override void OnRenderItemText(ToolStripItemTextRenderEventArgs e)
     {
-        if (e.Item.Tag is string tag && tag.StartsWith("status-", StringComparison.Ordinal))
-            TextRenderer.DrawText(e.Graphics, e.Text, e.TextFont, e.TextRectangle, e.Item.ForeColor, e.TextFormat);
+        if(IsStatus(e.Item))e.TextColor=e.Item.ForeColor;
+        else if(!e.Item.Enabled)e.TextColor=SystemInformation.HighContrast?SystemColors.GrayText:ControlPaint.Light(e.Item.ForeColor,.45f);
+        else if(SystemInformation.HighContrast)e.TextColor=e.Item.Selected||e.Item.Pressed?SystemColors.HighlightText:SystemColors.MenuText;
+        float scale=(e.ToolStrip?.DeviceDpi??96)/96f;
+        var text=e.TextRectangle;
+        if(e.ToolStrip is ToolStripDropDown)
+        {
+            int left=(int)Math.Round(46*scale),right=(int)Math.Round(20*scale);
+            text=new Rectangle(left,0,Math.Max(1,VisibleItemWidth(e.Item)-left-right),e.Item.Height);
+        }
+        else text=new Rectangle(text.X,0,text.Width,e.Item.Height);
+        e.TextRectangle=text;
+        e.TextFormat=(e.TextFormat&~(TextFormatFlags.Top|TextFormatFlags.Bottom))|TextFormatFlags.VerticalCenter|TextFormatFlags.SingleLine;
+        if(IsStatus(e.Item))TextRenderer.DrawText(e.Graphics,e.Text,e.TextFont,e.TextRectangle,e.TextColor,e.TextFormat);
         else base.OnRenderItemText(e);
+    }
+    static int VisibleItemWidth(ToolStripItem item)=>Math.Min(item.Width,(item.Owner?.ClientSize.Width??item.Width)-item.Bounds.Left);
+    static Rectangle GlyphBounds(ToolStripItem item)
+    {
+        float scale=(item.Owner?.DeviceDpi??96)/96f;
+        int size=(int)Math.Round(18*scale);
+        return new Rectangle((int)Math.Round(14*scale),(item.Height-size)/2,size,size);
+    }
+    protected override void OnRenderItemImage(ToolStripItemImageRenderEventArgs e)
+    {
+        if(e.Image is null)return;
+        var bounds=GlyphBounds(e.Item);
+        if(!e.Item.Enabled&&!IsStatus(e.Item))
+        {
+            using var disabled=new Bitmap(e.Image,bounds.Size);
+            ControlPaint.DrawImageDisabled(e.Graphics,disabled,bounds.X,bounds.Y,e.Item.BackColor);
+            return;
+        }
+        var state=e.Graphics.Save();
+        e.Graphics.InterpolationMode=InterpolationMode.HighQualityBicubic;
+        e.Graphics.PixelOffsetMode=PixelOffsetMode.HighQuality;
+        e.Graphics.DrawImage(e.Image,bounds);
+        e.Graphics.Restore(state);
     }
     protected override void OnRenderItemCheck(ToolStripItemImageRenderEventArgs e)
     {
-        e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-        var box = e.ImageRectangle; float unit = Math.Max(1, Math.Min(box.Width, box.Height) / 16f);
-        float x = box.Left + 3 * unit, y = box.Top + 8 * unit;
-        using var pen = new Pen(colors.Accent, 1.8f * unit) { StartCap = LineCap.Round, EndCap = LineCap.Round };
-        e.Graphics.DrawLines(pen, [new PointF(x, y), new(x + 3 * unit, y + 3 * unit), new(x + 10 * unit, y - 4 * unit)]);
+        var bounds=GlyphBounds(e.Item);e.Graphics.SmoothingMode=SmoothingMode.AntiAlias;
+        using var pen=new Pen(SystemInformation.HighContrast?(e.Item.Selected?SystemColors.HighlightText:SystemColors.MenuText):colors.Accent,2);
+        float unit=Math.Max(1,Math.Min(bounds.Width,bounds.Height)/16f);
+        float x=bounds.Left+(bounds.Width-11*unit)/2,y=bounds.Top+bounds.Height/2f;
+        e.Graphics.DrawLines(pen,[new PointF(x,y),new PointF(x+4*unit,y+4*unit),new PointF(x+11*unit,y-4*unit)]);
     }
     protected override void OnRenderArrow(ToolStripArrowRenderEventArgs e)
     {
-        var box = e.ArrowRectangle; float x = box.Left + box.Width / 2f, y = box.Top + box.Height / 2f;
-        using var pen = new Pen(e.Item?.ForeColor ?? colors.Text, 1.4f);
-        e.Graphics.SmoothingMode = SmoothingMode.AntiAlias;
-        e.Graphics.DrawLines(pen, e.Direction == ArrowDirection.Down ? [new PointF(x - 3, y - 1), new(x, y + 2), new(x + 3, y - 1)]
-            : [new PointF(x - 1, y - 3), new(x + 2, y), new(x - 1, y + 3)]);
+        var bounds=e.ArrowRectangle;float x=bounds.Left+bounds.Width/2f,y=(e.Item?.Height??bounds.Height)/2f;
+        if(e.Item is not null)x=Math.Min(x,VisibleItemWidth(e.Item)-12*(e.Item.Owner?.DeviceDpi??96)/96f);
+        float size=Math.Max(2,Math.Min(bounds.Width,bounds.Height)/4f);
+        var color=e.Item is {Enabled:false}?SystemColors.GrayText:SystemInformation.HighContrast?(e.Item?.Selected==true?SystemColors.HighlightText:SystemColors.MenuText):e.Item?.ForeColor??e.ArrowColor;
+        using var pen=new Pen(color,1.5f);e.Graphics.SmoothingMode=SmoothingMode.AntiAlias;
+        PointF[] points=e.Direction switch
+        {
+            ArrowDirection.Left=>[new(x+size/2,y-size),new(x-size/2,y),new(x+size/2,y+size)],
+            ArrowDirection.Up=>[new(x-size,y+size/2),new(x,y-size/2),new(x+size,y+size/2)],
+            ArrowDirection.Down=>[new(x-size,y-size/2),new(x,y+size/2),new(x+size,y-size/2)],
+            _=>[new(x-size/2,y-size),new(x+size/2,y),new(x-size/2,y+size)]
+        };
+        e.Graphics.DrawLines(pen,points);
     }
-    protected override void OnRenderSeparator(ToolStripSeparatorRenderEventArgs e)
-    { using var pen = new Pen(colors.Border); e.Graphics.DrawLine(pen, 12, e.Item.Height / 2, e.Item.Width - 12, e.Item.Height / 2); }
     sealed class MenuPalette(UiColors p) : ProfessionalColorTable
     {
         public override Color CheckBackground => p.Surface;
-        public override Color CheckSelectedBackground => p.Hover;
-        public override Color CheckPressedBackground => p.Hover;
+        public override Color CheckSelectedBackground => SelectionColor(p);
+        public override Color CheckPressedBackground => SelectionColor(p);
         public override Color ToolStripDropDownBackground => p.Surface;
         public override Color ImageMarginGradientBegin => p.Surface;
         public override Color ImageMarginGradientMiddle => p.Surface;
         public override Color ImageMarginGradientEnd => p.Surface;
         public override Color MenuBorder => p.Border;
-        public override Color MenuItemBorder => p.Hover;
-        public override Color MenuItemSelected => p.Hover;
-        public override Color MenuItemSelectedGradientBegin => p.Hover;
-        public override Color MenuItemSelectedGradientEnd => p.Hover;
-        public override Color MenuItemPressedGradientBegin => p.Hover;
-        public override Color MenuItemPressedGradientMiddle => p.Hover;
-        public override Color MenuItemPressedGradientEnd => p.Hover;
+        public override Color MenuItemBorder => SelectionColor(p);
+        public override Color MenuItemSelected => SelectionColor(p);
+        public override Color MenuItemSelectedGradientBegin => SelectionColor(p);
+        public override Color MenuItemSelectedGradientEnd => SelectionColor(p);
+        public override Color MenuItemPressedGradientBegin => SelectionColor(p);
+        public override Color MenuItemPressedGradientMiddle => SelectionColor(p);
+        public override Color MenuItemPressedGradientEnd => SelectionColor(p);
         public override Color ToolStripGradientBegin => p.Surface;
         public override Color ToolStripGradientMiddle => p.Surface;
         public override Color ToolStripGradientEnd => p.Surface;
@@ -254,6 +331,7 @@ internal static class MenuStyling
             if (strip is not MenuStrip) MenuSymbols.Apply(item, item.ForeColor);
             if (item is ToolStripMenuItem menu && menu.HasDropDownItems) Apply(menu.DropDown, colors);
         }
+        FlatMenuRenderer.ApplySpacing(strip);
     }
 }
 
@@ -265,6 +343,12 @@ internal static class MenuSymbols
     static readonly System.Runtime.CompilerServices.ConditionalWeakTable<ToolStripItem, OwnedImage> images = new();
     internal static void Apply(ToolStripItem item, Color color)
     {
+        if (!(item.Tag is string statusTag && statusTag.StartsWith("status-", StringComparison.Ordinal)) && !SystemInformation.HighContrast)
+        {
+            bool dark = item.Owner is not null ? item.Owner.BackColor.GetBrightness() < .5f : color.GetBrightness() > .5f;
+            color = ColorTranslator.FromHtml(dark ? "#D2D2D2" : "#4B5563");
+        }
+
         string label = item.Text?.Replace("&", "").ToLowerInvariant() ?? "";
         string? glyph = item.Tag is string tag && tag.StartsWith("status-", StringComparison.Ordinal)
             ? tag == "status-active" ? "active-dot" : tag == "status-postponed" ? "clock" : "warning"
@@ -295,11 +379,11 @@ internal static class MenuSymbols
     }
     static Bitmap CreateLocal(string glyph, Color color)
     {
-        var bitmap = new Bitmap(16, 16);
+        var bitmap = new Bitmap(64, 64);
         using (var g = Graphics.FromImage(bitmap))
-        using (var pen = new Pen(color, 1.3f) { StartCap = LineCap.Round, EndCap = LineCap.Round, LineJoin = LineJoin.Round })
+        using (var pen = new Pen(color, 1.35f) { StartCap = LineCap.Round, EndCap = LineCap.Round, LineJoin = LineJoin.Round })
         {
-            g.SmoothingMode = SmoothingMode.AntiAlias;
+            g.ScaleTransform(4, 4); g.SmoothingMode = SmoothingMode.AntiAlias;
             switch (glyph)
             {
                 case "active-dot":

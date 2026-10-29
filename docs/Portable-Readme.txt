@@ -1,4 +1,4 @@
-ChatGPT Watchdog 0.5.5
+ChatGPT Watchdog 0.6.0
 Windows 11 x64 portable application
 
 WARNING: This app force-closes the ChatGPT Windows desktop app after computer

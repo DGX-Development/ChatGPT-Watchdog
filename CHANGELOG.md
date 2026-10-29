@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.0 - October 29, 2026
+
+- Match the compact menu-bar spacing and shared command icon style used by Backup Reminder.
+- Center menu labels, icons, shortcuts and checkmarks; refine selection highlights, separators and popup borders.
+- Apply consistent styling to Settings, appearance/notification choices and the tray menu while retaining status colors and non-clickable headings.
+- Preserve monitoring, countdown, pause/resume, startup and settings behavior.
+
 ## 0.5.5 - October 20, 2026
 
 - Publish the first portable Windows x64 download with its .NET runtime, license notices and SHA256 checksum.

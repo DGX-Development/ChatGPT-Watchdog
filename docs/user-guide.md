@@ -65,7 +65,7 @@ Watchdog runs locally without telemetry or remote control. Website links open on
 
 ## Screenshots
 
-The following version 0.5.4 images use generic settings and a monitoring-disabled preview mode. They show native controls; non-client title-bar appearance can differ from a normal Windows capture.
+The following version 0.6.0 images use generic settings and a monitoring-disabled preview mode. They show native controls; non-client title-bar appearance can differ from a normal Windows capture.
 
 | Warning countdown | Notification options |
 | --- | --- |
