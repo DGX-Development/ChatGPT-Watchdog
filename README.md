@@ -1,6 +1,6 @@
 # ChatGPT Watchdog
 
-![ChatGPT Watchdog for Windows](assets/chatgpt-watchdog-banner.webp)
+![ChatGPT Watchdog for Windows](https://raw.githubusercontent.com/DGX-Development/ChatGPT-Watchdog/3985b6702291d29c08d42fa5993b695d031063e7/assets/chatgpt-watchdog-banner.webp)
 
 A Windows utility that force-closes the **ChatGPT Windows desktop app** after computer inactivity. It helps prevent the app being left running after you walk away. **It does not close ChatGPT in a web browser.**
 
