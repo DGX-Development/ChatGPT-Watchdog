@@ -4,7 +4,9 @@
 
 A Windows utility that force-closes the **ChatGPT Windows desktop app** after computer inactivity. It helps prevent the app being left running after you walk away. **It does not close ChatGPT in a web browser.**
 
-**Current release: 1.0.3.**
+## Current release
+
+[Version 1.0.3](https://github.com/DGX-Development/ChatGPT-Watchdog/releases/tag/v1.0.3)
 
 [Windows installer](https://github.com/DGX-Development/ChatGPT-Watchdog/releases/download/v1.0.3/ChatGPT-Watchdog-1.0.3-Setup.exe) | [Portable ZIP](https://github.com/DGX-Development/ChatGPT-Watchdog/releases/download/v1.0.3/ChatGPT-Watchdog-1.0.3-Portable.zip) | [SHA-256 checksums](https://github.com/DGX-Development/ChatGPT-Watchdog/releases/download/v1.0.3/SHA256SUMS.txt)
 
@@ -23,13 +25,13 @@ Version 1.0.3 with monitoring paused and example timings. Select an image to ope
 
 The warning gives you time to cancel or postpone closure. This capture uses an extended warning interval.
 
-[![Watchdog countdown warning](assets/screenshots/chatgpt-watchdog-1.0.3-countdown.png)](assets/screenshots/chatgpt-watchdog-1.0.3-countdown.png)
+![Watchdog countdown warning](assets/screenshots/chatgpt-watchdog-1.0.3-countdown.png)
 
 ### Notification-area menu
 
 Open the app, resume or pause monitoring, or exit from the tray menu. The status shown here is paused.
 
-[![Watchdog tray menu](assets/screenshots/chatgpt-watchdog-1.0.3-tray.png)](assets/screenshots/chatgpt-watchdog-1.0.3-tray.png)
+![Watchdog tray menu](assets/screenshots/chatgpt-watchdog-1.0.3-tray.png)
 
 ### Settings, Help and About
 
