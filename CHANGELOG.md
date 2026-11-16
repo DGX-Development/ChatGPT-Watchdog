@@ -1,11 +1,24 @@
 # Changelog
 
-## 0.6.0 - October 29, 2026
+## 1.0.3 - 2026-11-15
 
-- Match the compact menu-bar spacing and shared command icon style used by Backup Reminder.
-- Center menu labels, icons, shortcuts and checkmarks; refine selection highlights, separators and popup borders.
-- Apply consistent styling to Settings, appearance/notification choices and the tray menu while retaining status colors and non-clickable headings.
-- Preserve monitoring, countdown, pause/resume, startup and settings behavior.
+- Introduce the WPF interface with shared setup, Settings, Help, About and confirmation layouts, plus installer and portable ZIP packages.
+- Keep monitoring timings on the main page with Save timing, Reset timing and confirmation before discarding edits.
+- Show monitoring state with an eye icon beside Pin and provide pause/resume from the notification-area menu.
+- Add consistent window-size locking, tray and startup preferences. Preserve configuration and custom warning sounds in backups.
+- Organize Help into readable sections. The app can still force-close ChatGPT while work is in progress; save important work before enabling monitoring.
+- The separately recorded phone-control work below remains outside this release preparation.
+
+## Unreleased - 0.6.1
+
+- Prepare 0.6.1 for an independently hosted PHP relay and phone interface, with no ChatGPT sign-in dependency.
+- Add project-local portable data and logs with startup registration disabled, and prompt relay delivery on warning transitions.
+- Package the phone connection support in the self-contained Windows executable; retain private connection settings separately during updates.
+
+- Add optional phone control through an outbound HTTPS relay and a separately paired P-256 signing key.
+- Support signed Postpone and Allow shutdown decisions with warning-specific expiry, replay protection and bounded extensions.
+- Add an independent phone page, optional ntfy alerts and isolated phone-settings previews.
+- Keep remote control disabled by default. Relay hosting, phone delivery and live Windows operation require setup and verification.
 
 ## 0.5.5 - October 20, 2026
 

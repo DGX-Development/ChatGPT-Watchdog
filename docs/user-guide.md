@@ -1,82 +1,115 @@
 # ChatGPT Watchdog user guide
 
-For the **ChatGPT Windows desktop app**, not ChatGPT in a browser.
+Version 1.0.3. Prepared locally; publication pending.
 
-> [!WARNING]
-> Watchdog force-closes ChatGPT after computer inactivity and an expired warning. Active work is not protected, and unsaved work may be lost. Pause monitoring before leaving important work unattended.
+## Getting started
 
-## Start and save
+Watchdog watches Windows inactivity and warns before closing the ChatGPT Windows desktop app.
 
-Run ChatGPT-Watchdog.exe from its permanent application folder. First launch opens settings; subsequent launches run in the tray. Double-click the dog to reopen settings. Launching another copy opens the existing settings window.
+### Warning
+It can force-close ChatGPT during active work. Unsaved work may be lost. Save important work before enabling monitoring.
 
-Defaults are 45 minutes inactive, a 120-second warning and 60-minute postponement. **Save settings** applies edits and keeps the window open. **Saved** means no further edits remain. Closing unsaved edits offers save, discard or continued editing. Closing settings returns to the tray; it does not stop monitoring.
+### Set your timing
+1. Enter Inactivity, Warning and Postpone countdown on the main page.
+2. Choose Save timing. Reset timing restores the default fields without saving.
+3. Click the eye icon beside Pin to start monitoring. Manual launches start paused.
 
-## Inactivity and the countdown
+### Pause or close
+- Use the eye icon or the tray menu to pause or resume monitoring.
+- Closing with unsaved timing offers Save changes, Discard changes or Keep editing, including when X hides to the tray.
+- Minimizing keeps your draft.
+- File > Exit or Ctrl+Q fully exits.
 
-Keyboard or mouse activity anywhere in your Windows session resets inactivity. Reading, watching or running a task without input still counts as inactivity. Watchdog does not inspect chat content or detect active tasks.
+Settings holds appearance, window behavior and notifications. Help and logs stay in the main Help menu.
 
-The warning shows the remaining time. **Cancel**, Escape or closing the warning starts a fresh inactivity period. Input also cancels it. **Postpone** prevents closure for the saved interval; afterward, the inactivity threshold must also be satisfied. Postpone is available only on the countdown.
+## Setup wizard
 
-If the countdown expires, Watchdog requests termination of the verified main ChatGPT process and checks for exit. It does not perform a graceful-close step, terminate every matching process, sign out of ChatGPT or promise to stop separate services. Unknown identity or unavailable input prevents a new force-close request.
+Help > Run setup again opens the optional four-step guide. Step two is Appearance and window behavior; step three sets monitoring timing.
 
-## Pause and exit
+Finish saves your choices. Skip setup leaves draft choices unchanged.
 
-Use the tray menu or **Settings > Pause monitoring**. While paused, the dog gains an amber dot, the tray heading reads **MONITORING PAUSED**, and the command changes to **Resume monitoring**. Resume starts a fresh inactivity period.
+Restoring a configuration applies it immediately. Monitoring pauses while setup is open and stays paused afterward until you start or resume it.
 
-Pause and postponement apply only to the current run. Restarting Watchdog starts monitoring again. **File > Exit** and the tray's **Exit watchdog** stop the current run; they do not disable startup at the next sign-in.
+## Monitoring and countdown
 
-## Startup, locking and sleep
+Inactivity is the number of minutes without Windows input before a warning. Warning is the number of seconds to cancel or postpone.
 
-**Settings > Start Watchdog when I sign in** defaults to On. Saving main settings registers startup; the menu switch saves immediately. A new portable copy must save once. Windows startup controls may disable or delay launch.
+Postpone adds the chosen number of minutes. Valid ranges: inactivity 1–1440 minutes, warning 10–600 seconds, postponement 1–1440 minutes.
 
-While Windows is locked, the countdown may expire without a visible warning or sound. Unlocking cancels a pending warning. Watchdog cannot execute during sleep or hibernation and does not wake the computer. After resume, an expired warning gets a fresh countdown.
+New input cancels a warning. Sleep does not consume a warning countdown.
 
-The underlying termination mechanism has been tested with disposable applications while locked. Full-duration locked monitoring and active-task shutdown remain unverified; do not assume unattended work is protected.
+Unknown input or process state prevents closure. A failed close is not repeatedly attempted without new activity.
 
-## Notifications and appearance
+## Window and appearance
 
-**Settings > Notifications** controls sound, bringing the warning forward and keeping it above ordinary windows. These switches default to On. Windows may refuse foreground activation; Watchdog briefly flashes its taskbar entry instead. Windows also controls the duration and visibility of startup notifications.
+Settings > Appearance previews System, Light or Dark immediately. Save retains the choice; Cancel restores it.
 
-Choose Windows sound or a PCM WAV file with **Browse**. **Preview sound** tests the selection without saving or starting a countdown. **Save options** immediately saves notification preferences while preserving unrelated unsaved timing or appearance edits. Available custom sound files are copied into the data folder; originals remain unchanged. Missing or unplayable sounds fall back to Windows sound. Volume and mute settings apply.
+Settings > Window controls close/minimize to tray, Start minimized in the system tray and size locking. Timing is on the main page.
 
-Choose **System**, **Light** or **Dark** under Appearance. Alt+F, Alt+S and Alt+H open the menus; Ctrl+S saves settings, Ctrl+Q exits, and F1 opens Help.
+Choose Save timing to apply changes, or Reset timing to restore the default fields. Reset window sizes clears the lock and restores the default size when saved.
 
-## Data, updates and removal
+Pin keeps the main window above ordinary windows; another topmost app may still be in front. Enable Start when I sign in to Windows to start monitoring automatically at sign-in.
 
-**Settings > Open data folder** opens `%LOCALAPPDATA%\ChatGPT Watchdog`:
+Turn it off and Save to remove the registration.
 
-- `settings.json`: timings, appearance, startup preference and notifications.
-- `sounds`: imported custom sound files.
-- `logs`: daily UTC shutdown records and Windows errors, without chat content.
+## Warning sound
 
-Exit Watchdog before manually copying or changing its data. Configuration backup and restore commands are not included.
+Choose No sound, Windows default or Custom WAV. Browse starts beside your selected sound, otherwise in Windows Media.
 
-To update, exit Watchdog and replace all supplied application files in the same folder. Keep your separate data folder. Keep all supplied license and runtime notice files. The portable release includes its .NET runtime; framework-dependent source builds require the .NET 10 Desktop Runtime.
+Use a genuine RIFF/WAVE file; renaming an MP3 does not convert it. Save copies the sound into this profile.
 
-Before moving the app, turn off startup, exit and move the application files, then enable startup from the new location. To remove it, turn off startup, exit and remove the application folder. Retain or delete the separate data folder as needed.
+Preview plays the selected sound. If the saved sound becomes unavailable, normal warning playback falls back to the Windows sound.
 
-## Troubleshooting and privacy
+## Back up and restore
 
-Hover over the dog or open its menu to check status. **Monitoring unavailable** means a reliable input reading or application identity could not be obtained. **Closure not confirmed** means ChatGPT or related processes may remain. Open the data folder's `logs` subfolder for details; Watchdog suppresses repeated unattended closure attempts after failure.
+File > Back up configuration saves timing, notification options, window preferences and available custom WAV bytes in a ZIP. It does not back up ChatGPT conversations or Windows startup registration.
 
-Target recognition is restricted to the identified official packaged desktop app in the current Windows session. Changes to that app's packaging may require a Watchdog update. Running a browser session or a different application is not supported.
+Restore validates the package before changing files and saves a recovery ZIP first. Restored sound is imported into this profile.
 
-Watchdog runs locally without telemetry or remote control. Website links open only when selected. **Help > Report an issue** opens [the GitHub issue form](https://github.com/DGX-Development/ChatGPT-Watchdog/issues/new); review and submit it yourself. Reports and shared logs should omit personal paths and private information.
+You may also import legacy Watchdog settings.json; a missing external sound cannot be recovered from JSON alone. Restoring pauses monitoring.
 
-## Screenshots
+Start it again from the main page when ready.
 
-The following version 0.6.0 images use generic settings and a monitoring-disabled preview mode. They show native controls; non-client title-bar appearance can differ from a normal Windows capture.
+## Help and updates
 
-| Warning countdown | Notification options |
-| --- | --- |
-| ![Warning countdown in dark appearance](../assets/screenshots/warning-dark.png) | ![Notification options in dark appearance](../assets/screenshots/notifications-dark.png) |
+Help > Check for updates compares the current version to the public GitHub stable release. A newer local version is reported separately and is not a reason to downgrade.
 
-| Help | About |
-| --- | --- |
-| ![Help in dark appearance](../assets/screenshots/help-dark.png) | ![About in dark appearance](../assets/screenshots/about-dark.png) |
+Report an issue asks before opening GitHub in your browser. A GitHub account is needed to submit.
 
-| Monitoring active | Monitoring paused |
-| --- | --- |
-| ![Active tray menu](../assets/screenshots/tray-monitoring-dark.png) | ![Paused tray menu](../assets/screenshots/tray-paused-dark.png) |
+The app does not automatically send personal settings or logs.
 
-[Light countdown](../assets/screenshots/warning-light.png), [light notifications](../assets/screenshots/notifications-light.png), [custom sound options](../assets/screenshots/notifications-custom-dark.png), [light custom sound options](../assets/screenshots/notifications-custom-light.png), [light Help](../assets/screenshots/help-light.png), [light About](../assets/screenshots/about-light.png), [light active tray](../assets/screenshots/tray-monitoring-light.png), and [light paused tray](../assets/screenshots/tray-paused-light.png).
+## Install and portable use
+
+Installed settings are stored in LocalAppData\ChatGPT Watchdog. A portable ZIP keeps its profile folder beside the executable when portable.mode is present.
+
+Extract the complete ZIP. Back up your configuration before replacing application files.
+
+Before moving or deleting a portable copy, turn off Windows startup and Save. Uninstall removes the Windows startup entry belonging to this installation and offers Keep settings or Remove settings. Keep retains your profile for reinstall; Remove deletes its timing, window settings, saved sound, logs and recovery copies.
+
+Silent uninstall keeps settings. If the profile contains a linked file or folder, Remove settings leaves the profile in place and explains why. External files and separately saved backup ZIPs are left alone.
+
+Start minimized in the system tray hides the main window on launch after setup; use the tray menu to reopen it. This does not change whether monitoring is active.
+
+Monitoring starts paused on manual launch; Start monitoring or sign-in startup enables it.
+
+## Historical development material
+
+The following retained phone-control notes describe separate paused work. Phone control is not included in 1.0.3.
+
+## Phone control (0.6.1)
+
+Phone control uses your own PHP hosting without a ChatGPT sign-in. Open the private phone access link in your regular browser, pair it once and subscribe in the free ntfy app. Bookmark the phone page or add it to the home screen for later access. A new website address requires new browser pairing. Keep the access link private. Phone controls do not require a paid OpenAI API or ChatGPT Sites subscription.
+
+Phone control is optional and disabled by default for a new configuration. It requires a trusted HTTPS relay and a paired phone browser. Open **Settings > Phone control** to inspect the connection. See [relay setup](development.md#phone-control-relay). Keep the private **remote-control.json** beside the executable when updating; do not share it or include it in a public package.
+
+The local candidate includes **Start Watchdog.cmd** for portable monitoring. Exit the old Watchdog from its tray menu before opening it. The new instance stores its profile and logs inside its candidate folder and does not register Windows startup. It uses the same inactivity/force-close protection and can close ChatGPT; this is ordinary use, not a preview. Restarting Windows still follows the existing startup entry unless that entry is separately changed. **Phone Demo.cmd** is the optional fake-target check and cannot close ChatGPT.
+
+When a warning arrives, open the phone page and choose **Postpone** or **Allow shutdown**. Postpone grants the duration configured in Watchdog. Allow shutdown leaves the original countdown running; it does not close ChatGPT early. Wait for Watchdog's reported outcome: sending a response does not mean the PC accepted it.
+
+Watchdog rejects expired, forged, old-session and repeated responses. Default remote limits allow at most two postponements within a 120-minute window beginning at the first accepted postponement. A full configured postponement must fit inside the remaining window; otherwise the countdown continues. Windows input changes reset this budget. Windows cannot establish that input came from a physical person.
+
+The open phone page refreshes status while in the foreground. Background warnings need the optional ntfy Android app and relay notification setup. Delivery can be delayed or blocked by connectivity, service limits or Android power management. Missing delivery or a missing valid response leaves the PC countdown running.
+
+The phone's private key stays in its browser storage; only the public key is copied to the PC and relay. Clearing browser storage requires pairing again. Protect the phone, browser and relay account. Trusted relay hosting is essential because it serves the signing page. This remains a user-mode utility: software already controlling the Windows account can tamper with Watchdog or stop it. Signing does not prevent that.
+
+This candidate does not wake a sleeping computer, relaunch ChatGPT, restrict Codex to its existing task, or close all related workers. It does not inject messages into existing Codex chats or create ChatGPT Tasks.

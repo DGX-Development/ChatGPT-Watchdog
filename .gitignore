@@ -63,3 +63,8 @@
 !/tests/ChatGPTWatchdog.Tests/Program.cs
 !/scripts/Publish-Windows.ps1
 !/docs/Portable-Readme.txt
+!/src/ChatGPTWatchdog/RemoteApproval.cs
+!/src/ChatGPTWatchdog/RemoteClient.cs
+!/src/ChatGPTWatchdog/RemoteSettingsForm.cs
+!/scripts/Test-PhoneControl.ps1
+!/src/ChatGPTWatchdog/RemoteDemoForm.cs

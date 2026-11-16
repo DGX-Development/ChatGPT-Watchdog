@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk">
+ <PropertyGroup>
+  <OutputType>WinExe</OutputType>
+  <TargetFramework>net10.0-windows</TargetFramework>
+  <UseWPF>true</UseWPF>
+  <UseWindowsForms>true</UseWindowsForms>
+  <ImplicitUsings>disable</ImplicitUsings>
+  <Nullable>enable</Nullable>
+  <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+  <EnableDefaultPageItems>false</EnableDefaultPageItems>
+  <StartupObject>ChatGPTWatchdog.ReviewEntry</StartupObject>
+  <AssemblyName>ChatGPT-Watchdog</AssemblyName>
+  <Version>1.0.3</Version>
+  <AssemblyTitle>ChatGPT Watchdog</AssemblyTitle>
+  <InformationalVersion>1.0.3</InformationalVersion>
+  <IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
+  <Product>ChatGPT Watchdog</Product>
+  <Description>ChatGPT Watchdog</Description>
+  <ApplicationIcon>../../assets/watchdog.ico</ApplicationIcon>
+  <DebugType>none</DebugType>
+  <SafeReview Condition="'$(SafeReview)' == ''">false</SafeReview>
+  <DefineConstants Condition="'$(SafeReview)' == 'true'">$(DefineConstants);SAFE_REVIEW</DefineConstants>
+ </PropertyGroup>
+ <ItemGroup>
+  <Compile Include="*.cs" />
+  <Compile Include="../DgxDesktop/DgxAboutView.cs" />
+  <Compile Include="../ChatGPTWatchdog.DesktopCore/WatchEngine.cs;../ChatGPTWatchdog.DesktopCore/Settings.cs;../ChatGPTWatchdog.DesktopCore/ShutdownAttempt.cs;../ChatGPTWatchdog.DesktopCore/WarningSound.cs;../ChatGPTWatchdog.DesktopCore/WarningNotification.cs;../ChatGPTWatchdog.DesktopCore/SoundImport.cs;../ChatGPTWatchdog.DesktopCore/WindowsTarget.cs;../ChatGPTWatchdog.DesktopCore/NativeShutdownTarget.cs;../ChatGPTWatchdog.DesktopCore/ShutdownLog.cs" />
+  <EmbeddedResource Include="../../assets/watchdog.ico" LogicalName="brand.ico" />
+  <EmbeddedResource Include="../../assets/watchdog.png" LogicalName="brand.png" />
+  <EmbeddedResource Include="../DgxDesktop/ForgePresentation.xaml" LogicalName="styles.xaml" />
+  <EmbeddedResource Include="../DgxDesktop/Shell.xaml" LogicalName="shell.xaml" />
+  <EmbeddedResource Include="Fluent-Icons-LICENSE.txt" LogicalName="Fluent-Icons-LICENSE.txt" />
+ </ItemGroup>
+</Project>
